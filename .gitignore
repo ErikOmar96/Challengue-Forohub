@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### volumen docker de la base de datos #####
+.docker/mariadb-data
