@@ -1,18 +1,20 @@
 package pe.api.forohub.models.topic;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 import pe.api.forohub.models.answer.Answer;
 import pe.api.forohub.models.course.Course;
 import pe.api.forohub.models.user.User;
 
 import java.time.LocalDateTime;
+import java.util.LinkedList;
 import java.util.List;
 
 @Getter
-@AllArgsConstructor
+@Setter
 @NoArgsConstructor
 @Entity
 public class Topic {
@@ -24,6 +26,8 @@ public class Topic {
 
     private String message;
 
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
     @Enumerated(EnumType.STRING)
@@ -37,4 +41,13 @@ public class Topic {
 
     @OneToMany
     private List<Answer> answers;
+
+    public Topic(String title, String message, User author, Course course) {
+        this.title = title;
+        this.message = message;
+        this.author = author;
+        this.course = course;
+        this.status = TopicStatus.PENDING;
+        this.answers = new LinkedList<>();
+    }
 }
