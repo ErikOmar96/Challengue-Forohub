@@ -1,4 +1,4 @@
-package pe.api.forohub.models.course;
+package pe.api.forohub.domain.course;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

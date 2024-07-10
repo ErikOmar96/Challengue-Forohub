@@ -1,4 +1,4 @@
-package pe.api.forohub.controllers.topic;
+package pe.api.forohub.domain.topic;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

@@ -1,13 +1,13 @@
-package pe.api.forohub.models.topic;
+package pe.api.forohub.domain.topic;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-import pe.api.forohub.models.answer.Answer;
-import pe.api.forohub.models.course.Course;
-import pe.api.forohub.models.user.User;
+import pe.api.forohub.domain.answer.Answer;
+import pe.api.forohub.domain.course.Course;
+import pe.api.forohub.domain.user.User;
 
 import java.time.LocalDateTime;
 import java.util.LinkedList;

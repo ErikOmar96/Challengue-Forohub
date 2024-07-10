@@ -1,4 +1,4 @@
-package pe.api.forohub.controllers.user;
+package pe.api.forohub.domain.user;
 
 public record CreateUserDTO(
     String name,

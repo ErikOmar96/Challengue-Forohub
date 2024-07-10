@@ -1,4 +1,4 @@
-package pe.api.forohub.models.topic;
+package pe.api.forohub.domain.topic;
 
 import lombok.Getter;
 

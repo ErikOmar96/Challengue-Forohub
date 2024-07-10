@@ -1,11 +1,11 @@
-package pe.api.forohub.models.answer;
+package pe.api.forohub.domain.answer;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import pe.api.forohub.models.topic.Topic;
-import pe.api.forohub.models.user.User;
+import pe.api.forohub.domain.topic.Topic;
+import pe.api.forohub.domain.user.User;
 
 import java.time.LocalDateTime;
 

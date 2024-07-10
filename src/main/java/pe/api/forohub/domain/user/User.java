@@ -1,4 +1,4 @@
-package pe.api.forohub.models.user;
+package pe.api.forohub.domain.user;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
