@@ -75,7 +75,7 @@ public class TopicController {
         @PageableDefault(size = 3) Pageable pageable,
         @RequestParam(name = "status", required = false, defaultValue = "ALL") String statusQueryParam
     ) {
-        System.out.println("query param: "+statusQueryParam);
+        System.out.println("query param: " + statusQueryParam);
         if (statusQueryParam == null || statusQueryParam.equalsIgnoreCase("ALL") || statusQueryParam.isEmpty()) {
             return ResponseEntity.ok(topicRepository.findAll(pageable).map(ResponseListTopicDTO::new));
         }
