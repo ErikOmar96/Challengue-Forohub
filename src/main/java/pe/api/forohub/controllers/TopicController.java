@@ -17,6 +17,7 @@ import pe.api.forohub.domain.user.User;
 import pe.api.forohub.domain.course.CourseRepository;
 import pe.api.forohub.domain.topic.TopicRepository;
 import pe.api.forohub.domain.user.UserRepository;
+import pe.api.forohub.exceptions.BadPayloadException;
 
 import java.net.URI;
 import java.util.LinkedList;
@@ -47,26 +48,27 @@ public class TopicController {
     ) {
         Optional<User> authorOfTopic = userRepository.findById(createTopicDTO.idUser());
         Optional<Course> courseOfTopic = courseRepository.findById(createTopicDTO.idCourse());
-        if (authorOfTopic.isPresent() && courseOfTopic.isPresent()) {
-            User user = authorOfTopic.get();
-            Course course = courseOfTopic.get();
-            Topic topic = new Topic(createTopicDTO.title(), createTopicDTO.message(), user, course);
-            topicRepository.save(topic);
-            ResponseTopicDTO responseTopicDTO = new ResponseTopicDTO(
-                topic.getId(),
-                topic.getTitle(),
-                topic.getMessage(),
-                topic.getCreatedAt(),
-                topic.getStatus(),
-                new ResponseUserDTO(user.getId(), user.getName(), user.getEmail()),
-                new ResponseCourseDTO(course.getId(), course.getName(), course.getCategory()),
-                new LinkedList<>()
-            );
-            URI urlToTopicResource = uriComponentsBuilder.path("/topics/{id}").buildAndExpand(topic.getId()).toUri();
-            return ResponseEntity.created(urlToTopicResource).body(responseTopicDTO);
-        } else {
-            //TODO: enhance this
-            return ResponseEntity.notFound().build();
+        if (authorOfTopic.isEmpty()){
+            throw new BadPayloadException("author id doesn't exists");
         }
+        if (courseOfTopic.isEmpty()){
+            throw new BadPayloadException("entity author not found");
+        }
+        User user = authorOfTopic.get();
+        Course course = courseOfTopic.get();
+        Topic topic = new Topic(createTopicDTO.title(), createTopicDTO.message(), user, course);
+        topicRepository.save(topic);
+        ResponseTopicDTO responseTopicDTO = new ResponseTopicDTO(
+            topic.getId(),
+            topic.getTitle(),
+            topic.getMessage(),
+            topic.getCreatedAt(),
+            topic.getStatus(),
+            new ResponseUserDTO(user.getId(), user.getName(), user.getEmail()),
+            new ResponseCourseDTO(course.getId(), course.getName(), course.getCategory()),
+            new LinkedList<>()
+        );
+        URI urlToTopicResource = uriComponentsBuilder.path("/topics/{id}").buildAndExpand(topic.getId()).toUri();
+        return ResponseEntity.created(urlToTopicResource).body(responseTopicDTO);
     }
 }

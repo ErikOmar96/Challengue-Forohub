@@ -4,7 +4,7 @@ POST {{ server }}/topics
 Content-Type: application/json
 
 {
-    "idUser": 1,
+    "idUser": 2,
     "idCourse": 1,
     "title": "have two problem",
     "message": "I don't understand two problems"
