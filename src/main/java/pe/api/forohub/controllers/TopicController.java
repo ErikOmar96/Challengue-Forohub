@@ -15,6 +15,7 @@ import pe.api.forohub.domain.user.User;
 import pe.api.forohub.domain.subject.SubjectRepository;
 import pe.api.forohub.domain.user.UserRepository;
 import pe.api.forohub.exceptions.BadPayloadException;
+import pe.api.forohub.exceptions.BadQueryParamValueException;
 
 import java.net.URI;
 import java.util.LinkedList;
@@ -44,15 +45,15 @@ public class TopicController {
         UriComponentsBuilder uriComponentsBuilder
     ) {
         Optional<User> authorOfTopic = userRepository.findById(createTopicDTO.idUser());
-        Optional<Subject> courseOfTopic = subjectRepository.findById(createTopicDTO.idCourse());
-        if (authorOfTopic.isEmpty()){
+        Optional<Subject> subjectOfTopic = subjectRepository.findById(createTopicDTO.idCourse());
+        if (authorOfTopic.isEmpty()) {
             throw new BadPayloadException("author id doesn't exists");
         }
-        if (courseOfTopic.isEmpty()){
-            throw new BadPayloadException("entity author not found");
+        if (subjectOfTopic.isEmpty()) {
+            throw new BadPayloadException("subject id doesn't exists");
         }
         User user = authorOfTopic.get();
-        Subject subject = courseOfTopic.get();
+        Subject subject = subjectOfTopic.get();
         Topic topic = new Topic(createTopicDTO.title(), createTopicDTO.message(), user, subject);
         topicRepository.save(topic);
         ResponseTopicDTO responseTopicDTO = new ResponseTopicDTO(
@@ -70,9 +71,19 @@ public class TopicController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<ResponseListTopicDTO>> getTopics(@PageableDefault(size = 3) Pageable pageable) {
-        return ResponseEntity.ok(topicRepository.findByStatus(pageable, TopicStatus.PENDING).map(topic -> new ResponseListTopicDTO(
-            topic.getId(), topic.getTitle(), topic.getMessage(), topic.getStatus()
-        )));
+    public ResponseEntity<Page<ResponseListTopicDTO>> getTopics(
+        @PageableDefault(size = 3) Pageable pageable,
+        @RequestParam(name = "status", required = false, defaultValue = "ALL") String statusQueryParam
+    ) {
+        System.out.println("query param: "+statusQueryParam);
+        if (statusQueryParam == null || statusQueryParam.equalsIgnoreCase("ALL") || statusQueryParam.isEmpty()) {
+            return ResponseEntity.ok(topicRepository.findAll(pageable).map(ResponseListTopicDTO::new));
+        }
+        try {
+            TopicStatus status = TopicStatus.fromString(statusQueryParam);
+            return ResponseEntity.ok(topicRepository.findByStatus(pageable, status).map(ResponseListTopicDTO::new));
+        } catch (IllegalArgumentException e) {
+            throw new BadQueryParamValueException(String.format("param value: %s is not valid.", statusQueryParam), e);
+        }
     }
 }

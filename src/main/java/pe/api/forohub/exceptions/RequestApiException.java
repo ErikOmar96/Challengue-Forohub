@@ -7,7 +7,6 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
@@ -16,4 +15,11 @@ public class RequestApiException extends RuntimeException{
     private String error;
     private Exception internalException;
     private String details;
+
+    public RequestApiException(String error, Exception internalException, String details) {
+        this.timestamp = LocalDateTime.now();
+        this.error = error;
+        this.internalException = internalException;
+        this.details = details;
+    }
 }

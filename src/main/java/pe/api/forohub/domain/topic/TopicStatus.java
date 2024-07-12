@@ -20,7 +20,7 @@ public enum TopicStatus {
                 return status;
             }
         }
-        throw new IllegalArgumentException("No constant with text " + text + " found");
+        throw new IllegalArgumentException("Status with value " + text + " not found.");
     }
 
     public boolean equalsIgnoreCase(String other) {

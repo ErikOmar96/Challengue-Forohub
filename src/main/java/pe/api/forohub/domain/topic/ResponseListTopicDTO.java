@@ -6,4 +6,7 @@ public record ResponseListTopicDTO (
     String message,
     TopicStatus status
 ){
+    public ResponseListTopicDTO (Topic topic){
+        this(topic.getId(), topic.getTitle(), topic.getMessage(), topic.getStatus());
+    }
 }
