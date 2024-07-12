@@ -1,9 +1,7 @@
 package pe.api.forohub.domain.topic;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import pe.api.forohub.domain.answer.ResponseAnswerDTO;
-import pe.api.forohub.domain.course.ResponseCourseDTO;
+import pe.api.forohub.domain.subject.ResponseSubjectDTO;
 import pe.api.forohub.domain.user.ResponseUserDTO;
 
 import java.time.LocalDateTime;
@@ -16,7 +14,7 @@ public record ResponseTopicDTO(
     LocalDateTime createdAt,
     TopicStatus status,
     ResponseUserDTO author,
-    ResponseCourseDTO course,
+    ResponseSubjectDTO course,
     List<ResponseAnswerDTO> answers
 ) {
 }

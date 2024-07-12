@@ -1,8 +1,8 @@
-package pe.api.forohub.domain.course;
+package pe.api.forohub.domain.subject;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CourseRepository extends JpaRepository<Course, Long> {
+public interface SubjectRepository extends JpaRepository<Subject, Long> {
 }

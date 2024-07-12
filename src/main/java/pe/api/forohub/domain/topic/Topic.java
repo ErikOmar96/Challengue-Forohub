@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import pe.api.forohub.domain.answer.Answer;
-import pe.api.forohub.domain.course.Course;
+import pe.api.forohub.domain.subject.Subject;
 import pe.api.forohub.domain.user.User;
 
 import java.time.LocalDateTime;
@@ -37,16 +37,16 @@ public class Topic {
     private User author;
 
     @ManyToOne
-    private Course course;
+    private Subject subject;
 
     @OneToMany
     private List<Answer> answers;
 
-    public Topic(String title, String message, User author, Course course) {
+    public Topic(String title, String message, User author, Subject subject) {
         this.title = title;
         this.message = message;
         this.author = author;
-        this.course = course;
+        this.subject = subject;
         this.status = TopicStatus.PENDING;
         this.answers = new LinkedList<>();
     }

@@ -1,21 +1,18 @@
 package pe.api.forohub.controllers;
 
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
-import pe.api.forohub.domain.course.ResponseCourseDTO;
-import pe.api.forohub.domain.topic.CreateTopicDTO;
-import pe.api.forohub.domain.course.Course;
-import pe.api.forohub.domain.topic.ResponseTopicDTO;
-import pe.api.forohub.domain.topic.Topic;
+import pe.api.forohub.domain.subject.ResponseSubjectDTO;
+import pe.api.forohub.domain.topic.*;
+import pe.api.forohub.domain.subject.Subject;
 import pe.api.forohub.domain.user.ResponseUserDTO;
 import pe.api.forohub.domain.user.User;
-import pe.api.forohub.domain.course.CourseRepository;
-import pe.api.forohub.domain.topic.TopicRepository;
+import pe.api.forohub.domain.subject.SubjectRepository;
 import pe.api.forohub.domain.user.UserRepository;
 import pe.api.forohub.exceptions.BadPayloadException;
 
@@ -29,16 +26,16 @@ public class TopicController {
 
     private final TopicRepository topicRepository;
     private final UserRepository userRepository;
-    private final CourseRepository courseRepository;
+    private final SubjectRepository subjectRepository;
 
     public TopicController(
         TopicRepository topicRepository,
         UserRepository userRepository,
-        CourseRepository courseRepository
+        SubjectRepository subjectRepository
     ) {
         this.topicRepository = topicRepository;
         this.userRepository = userRepository;
-        this.courseRepository = courseRepository;
+        this.subjectRepository = subjectRepository;
     }
 
     @PostMapping
@@ -47,7 +44,7 @@ public class TopicController {
         UriComponentsBuilder uriComponentsBuilder
     ) {
         Optional<User> authorOfTopic = userRepository.findById(createTopicDTO.idUser());
-        Optional<Course> courseOfTopic = courseRepository.findById(createTopicDTO.idCourse());
+        Optional<Subject> courseOfTopic = subjectRepository.findById(createTopicDTO.idCourse());
         if (authorOfTopic.isEmpty()){
             throw new BadPayloadException("author id doesn't exists");
         }
@@ -55,8 +52,8 @@ public class TopicController {
             throw new BadPayloadException("entity author not found");
         }
         User user = authorOfTopic.get();
-        Course course = courseOfTopic.get();
-        Topic topic = new Topic(createTopicDTO.title(), createTopicDTO.message(), user, course);
+        Subject subject = courseOfTopic.get();
+        Topic topic = new Topic(createTopicDTO.title(), createTopicDTO.message(), user, subject);
         topicRepository.save(topic);
         ResponseTopicDTO responseTopicDTO = new ResponseTopicDTO(
             topic.getId(),
@@ -65,10 +62,17 @@ public class TopicController {
             topic.getCreatedAt(),
             topic.getStatus(),
             new ResponseUserDTO(user.getId(), user.getName(), user.getEmail()),
-            new ResponseCourseDTO(course.getId(), course.getName(), course.getCategory()),
+            new ResponseSubjectDTO(subject.getId(), subject.getName(), subject.getCategory()),
             new LinkedList<>()
         );
         URI urlToTopicResource = uriComponentsBuilder.path("/topics/{id}").buildAndExpand(topic.getId()).toUri();
         return ResponseEntity.created(urlToTopicResource).body(responseTopicDTO);
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<ResponseListTopicDTO>> getTopics(@PageableDefault(size = 3) Pageable pageable) {
+        return ResponseEntity.ok(topicRepository.findByStatus(pageable, TopicStatus.PENDING).map(topic -> new ResponseListTopicDTO(
+            topic.getId(), topic.getTitle(), topic.getMessage(), topic.getStatus()
+        )));
     }
 }
