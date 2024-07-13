@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TopicRepository extends JpaRepository<Topic, Long> {
     Page<Topic> findByStatus(Pageable status, TopicStatus topicStatus);
+    Page<Topic> findAllByStatusNot(Pageable status, TopicStatus topicStatus);
 }

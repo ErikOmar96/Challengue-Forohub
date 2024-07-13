@@ -6,4 +6,8 @@ public record ResponseSubjectDTO(
     String name,
     String category
 ) {
+
+    public ResponseSubjectDTO(Subject subject){
+        this(subject.getId(), subject.getName(), subject.getCategory());
+    }
 }

@@ -10,7 +10,7 @@ public record UpdateTopicDTO (
     String title,
     @NotBlank
     String message,
-    @NotNull
-    TopicStatus status
+    @NotBlank
+    String status
 ){
 }
