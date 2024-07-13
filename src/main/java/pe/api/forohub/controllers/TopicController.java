@@ -48,7 +48,7 @@ public class TopicController {
         UriComponentsBuilder uriComponentsBuilder
     ) {
         Optional<User> authorOfTopic = userRepository.findById(createTopicDTO.idUser());
-        Optional<Subject> subjectOfTopic = subjectRepository.findById(createTopicDTO.idCourse());
+        Optional<Subject> subjectOfTopic = subjectRepository.findById(createTopicDTO.isSubject());
         if (authorOfTopic.isEmpty()) {
             throw new BadPayloadException("author id doesn't exists");
         }
@@ -57,6 +57,9 @@ public class TopicController {
         }
         User user = authorOfTopic.get();
         Subject subject = subjectOfTopic.get();
+        if(topicRepository.existsByTitleAndAuthorAndSubject(createTopicDTO.title(), user, subject)) {
+            throw new BadPayloadException("There is already a topic with similar title, user and subject");
+        }
         Topic topic = new Topic(createTopicDTO.title(), createTopicDTO.message(), user, subject);
         topicRepository.save(topic);
         ResponseTopicDTO responseTopicDTO = new ResponseTopicDTO(

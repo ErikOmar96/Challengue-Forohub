@@ -14,7 +14,7 @@ public record ResponseTopicDTO(
     LocalDateTime createdAt,
     TopicStatus status,
     ResponseUserDTO author,
-    ResponseSubjectDTO course,
+    ResponseSubjectDTO subject,
     List<ResponseAnswerDTO> answers
 ) {
 }

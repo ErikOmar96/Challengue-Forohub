@@ -8,7 +8,7 @@ public record CreateTopicDTO(
     @NotNull
     Long idUser,
     @NotNull
-    Long idCourse,
+    Long isSubject,
     @NotBlank
     String title,
     @NotBlank
