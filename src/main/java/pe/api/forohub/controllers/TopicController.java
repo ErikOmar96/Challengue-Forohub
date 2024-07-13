@@ -78,7 +78,7 @@ public class TopicController {
 
     @GetMapping
     public ResponseEntity<Page<ResponseListTopicDTO>> getAll(
-        @PageableDefault(size = 3) Pageable pageable,
+        @PageableDefault(size = 5) Pageable pageable,
         @RequestParam(name = "status", required = false) String statusQueryParam
     ) {
         if (statusQueryParam == null || statusQueryParam.isEmpty()) {
