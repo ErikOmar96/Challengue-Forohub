@@ -1,5 +1,6 @@
 package pe.api.forohub.controllers;
 
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -7,6 +8,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+import pe.api.forohub.domain.answer.ResponseAnswerDTO;
 import pe.api.forohub.domain.subject.ResponseSubjectDTO;
 import pe.api.forohub.domain.topic.*;
 import pe.api.forohub.domain.subject.Subject;
@@ -84,5 +86,30 @@ public class TopicController {
         } catch (IllegalArgumentException e) {
             throw new BadQueryParamValueException(String.format("param value: %s is not valid.", statusQueryParam), e);
         }
+    }
+
+
+    @PutMapping
+    @Transactional
+    public ResponseEntity<ResponseTopicDTO> updateTopic(@RequestBody @Valid UpdateTopicDTO updateTopicDTO) {
+        Topic topic = topicRepository.getReferenceById(updateTopicDTO.id());
+        if(topic.getStatus() != TopicStatus.PENDING){
+            throw new BadPayloadException("Can be updated topics with status PENDING");
+        }
+        topic.setTitle(updateTopicDTO.title());
+        topic.setMessage(updateTopicDTO.message());
+        topic.setStatus(updateTopicDTO.status());
+        User user = topic.getAuthor();
+        Subject subject = topic.getSubject();
+        return ResponseEntity.ok(new ResponseTopicDTO(
+            topic.getId(),
+            topic.getTitle(),
+            topic.getMessage(),
+            topic.getCreatedAt(),
+            topic.getStatus(),
+            new ResponseUserDTO(user.getId(), user.getName(), user.getEmail()),
+            new ResponseSubjectDTO(subject.getId(), subject.getName(), subject.getCategory()),
+            topic.getAnswers().stream().map(ResponseAnswerDTO::new).toList()
+        ));
     }
 }

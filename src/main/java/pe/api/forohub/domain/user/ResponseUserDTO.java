@@ -5,4 +5,7 @@ public record ResponseUserDTO(
     String name,
     String email
 ) {
+    public ResponseUserDTO(User user){
+        this(user.getId(), user.getName(), user.getEmail());
+    }
 }
