@@ -22,14 +22,17 @@ public class Topic {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String title;
 
+    @Column(nullable = false)
     private String message;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private TopicStatus status;
 
