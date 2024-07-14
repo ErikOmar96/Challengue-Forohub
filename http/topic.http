@@ -1,0 +1,11 @@
+### Post topic create
+// Crea un topic
+POST {{ server }}/topics
+Content-Type: application/json
+
+{
+    "idUser": 2,
+    "isSubject": 1,
+    "title": "have two problem",
+    "message": "I don't understand two problems"
+}

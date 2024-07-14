@@ -1,0 +1,10 @@
+### Post user create
+// Crea un usuario
+POST {{ server }}/users
+Content-Type: application/json
+
+{
+    "name": "pepe",
+    "email": "pepe@gmail.com",
+    "password": "pepelindo"
+}
