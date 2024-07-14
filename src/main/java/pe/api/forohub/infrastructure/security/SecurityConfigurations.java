@@ -29,6 +29,7 @@ public class SecurityConfigurations {
             .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authorizeRequests -> {
                     authorizeRequests.requestMatchers(HttpMethod.POST, "/login").permitAll();
+                    authorizeRequests.requestMatchers(HttpMethod.POST, "/users").permitAll();
                     authorizeRequests.anyRequest().authenticated();
                 }
             )
