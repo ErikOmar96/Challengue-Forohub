@@ -7,10 +7,13 @@ import org.springframework.stereotype.Repository;
 import pe.api.forohub.domain.subject.Subject;
 import pe.api.forohub.domain.user.User;
 
+import java.util.Optional;
+
 
 @Repository
 public interface TopicRepository extends JpaRepository<Topic, Long> {
     Page<Topic> findByStatus(Pageable status, TopicStatus topicStatus);
     Page<Topic> findAllByStatusNot(Pageable status, TopicStatus topicStatus);
     boolean existsByTitleAndAuthorAndSubject(String title, User author, Subject subject);
+    Optional<Topic> findByIdAndStatus(Long id, TopicStatus topicStatus);
 }

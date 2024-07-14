@@ -11,9 +11,8 @@ import pe.api.forohub.domain.user.User;
 import java.time.LocalDateTime;
 
 @Entity
-@Getter
-@AllArgsConstructor
 @NoArgsConstructor
+@Getter
 public class Answer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,4 +34,11 @@ public class Answer {
     @ManyToOne
     private User author;
 
+    public Answer(String message, String solution, Topic topic, User author){
+        this.author = author;
+        this.topic = topic;
+        this.message = message;
+        this.solution = solution;
+        this.createdAt = LocalDateTime.now();
+    }
 }

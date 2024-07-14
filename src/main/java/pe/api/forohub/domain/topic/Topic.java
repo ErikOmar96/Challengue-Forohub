@@ -42,7 +42,7 @@ public class Topic {
     @ManyToOne
     private Subject subject;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "topic")
     private List<Answer> answers;
 
     public Topic(String title, String message, User author, Subject subject) {
