@@ -1,5 +1,6 @@
 package pe.api.forohub.controllers;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.web.PageableDefault;
@@ -16,6 +17,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/subjects")
+@SecurityRequirement(name = "bearer-key")
 public class SubjectController {
 
     @Autowired

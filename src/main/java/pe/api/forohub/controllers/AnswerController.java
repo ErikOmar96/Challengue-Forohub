@@ -1,5 +1,6 @@
 package pe.api.forohub.controllers;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,7 @@ public class AnswerController {
 
     @PostMapping
     @Transactional
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity<ResponseAnswerDTO> create(
         @RequestBody @Valid CreateAnswerDTO answerDTO,
         UriComponentsBuilder uriComponentsBuilder
