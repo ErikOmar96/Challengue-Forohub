@@ -27,6 +27,7 @@ public class UserController {
         @RequestBody @Valid CreateUserDTO newUser,
         UriComponentsBuilder uriComponentsBuilder
     ){
+        // Objeto de User
         User user = new User();
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         user.setName(newUser.name());
